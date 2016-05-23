@@ -4,6 +4,6 @@
 var bodyParser = require('body-parser');
 
 module.exports = function(app) {
-    app.use(bodyparser.json());
-    app.use(bodyParser.urlencoded({extendedL false}));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: false}));
 };
