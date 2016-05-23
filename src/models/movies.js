@@ -23,3 +23,5 @@ var movieSchema = new mongoose.Schema({
     }]
 });
 movieSchema.plugin(generateId());
+
+module.exports = mongoose.model('Movie', movieSchema);
