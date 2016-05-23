@@ -1,6 +1,6 @@
 // Persistence layer defining the movie schema
 var mongoose = require('mongoose');
-var generateId = require('./plugin/generateId');
+var generateId = require('./plugins/generateId');
 var movieSchema = new mongoose.Schema({
     id: {
         type: Number,

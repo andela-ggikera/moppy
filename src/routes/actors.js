@@ -2,7 +2,7 @@
  * Define endpoints for the moppy Api.
 */
 
-var Actor = require('.../models/actor');
+var Actor = require('../models/actor');
 var Movie = require('../models/movie');
 
 module.exports = {
@@ -58,7 +58,7 @@ module.exports = {
         });
     },
 
-    // POST endpoint: /movies/:id add one movie
+    // POST endpoint: /actors/:id/movies add one movie
     addMovie: function(req, res, next) {
         Actor.fineOne({id: req.params.id}, function(err, result) {
             if (err) { return res.status(400).json(err); }
@@ -76,7 +76,7 @@ module.exports = {
         });
     },
 
-    // DELETE endpoint: /movies/:id Delete a movie
+    // DELETE endpoint: /actors/:id/movies/:mid Delete a movie
     deleteMovie: function(req, res, next) {
         Actor.findOne({ id: req.params.id }, function(err, actor) {
             if (err) { return res.status(400).json(err); }
