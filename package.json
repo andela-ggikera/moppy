@@ -1,0 +1,22 @@
+{
+  "name": "moppy",
+  "version": "1.0.0",
+  "description": "A robust movies api implemented in nodejs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-ggikera/moppy.git"
+  },
+  "author": "githinji.gikera@andela.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andela-ggikera/moppy/issues"
+  },
+  "homepage": "https://github.com/andela-ggikera/moppy#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
