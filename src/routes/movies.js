@@ -6,13 +6,12 @@ module.exports = {
     // GET endpoint: /movies/:id Get a movie by id
     getOne: function (req, res, next) {
         // retrieve documents using their ObjectId
-        Movie.findOne({ id: req.params.id})
-        .populate('movies')
+        Movie.findOne({ id: req.params.id })
         .exec(function(err, movie) {
             if (err) {
                 return res.status(400).json(err);
             }
-            if (!actor) {
+            if (!movie) {
                 return res.status(404).json();
             }
             res.status(200).json(movie);
@@ -40,7 +39,7 @@ module.exports = {
         Movie.findOneAndUpdate({
             id: req.params.id}, req.body, function(err, result) {
                 if (err) { return res.status(400).json(err);
-                if (!actor) { return res.status(404).json(); }
+                if (!result) { return res.status(404).json(); }
                 res.status(200).json(result);
             }
         });

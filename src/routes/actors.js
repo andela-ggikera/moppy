@@ -44,7 +44,7 @@ module.exports = {
         Actor.findOneAndUpdate({
             id: req.params.id}, req.body, function(err, result) {
                 if (err) { return res.status(400).json(err);
-                if (!actor) { return res.status(404).json(); }
+                if (!result) { return res.status(404).json(); }
                 res.status(200).json(result);
             }
         });
@@ -60,14 +60,33 @@ module.exports = {
 
     // POST endpoint: /actors/:id/movies add one movie
     addMovie: function(req, res, next) {
-        Actor.fineOne({id: req.params.id}, function(err, result) {
-            if (err) { return res.status(400).json(err); }
-            if (!result) { return res.status(404).json(); }
-
+        Actor.findOne({id: req.params.id}, function(err, result) {
+            console.log(JSON.stringify(result));
+            if (err) return res.status(400).json(err);
+            if (!result) {
+                return res.status(404).json();
+            }
             Movie.findOne({ id: req.body.id }, function(err, movie) {
-                if (err) { return res.status(400).json(err); }
-                if (!movie) { return res.status(404).json() }
-                result.movies.push(movie);
+                if (err) return res.status(400).json(err);
+                // if it does not exist already
+                if (!movie) {
+                    // add the new movie to the actors list
+                    Movie.create(req.body, function(err, movie) {
+                        if (err) { return res.status(400).json(err); }
+                        result.movies.push(movie);
+                    });
+                }
+                else {
+                    // check to see if the movie is already added
+                    for (var i = 0; i < result.movies.length; i++) {
+                        if (result.movies[i] == movie._id) {
+                            continue;
+                        }
+                        else {
+                            result.movies.push(movie);
+                        }
+                    }
+                }
                 result.save(function(err) {
                     if (err) {return res.status(500).json(err);}
                     res.status(201).json(result);
