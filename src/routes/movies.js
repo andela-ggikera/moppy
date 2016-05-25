@@ -42,12 +42,11 @@ module.exports = {
     createOne: function(req, res, next) {
         Movie.findOne(req.body.id, function(err, result) {
             if (result) {
-                return res.status(302).json(result)
+                return res.status(400).json(result)
             }
             else {
                 Movie.create(req.body, function(err, movie) {
                     if (err) {
-                        console.log(err)
                         return res.status(400).json(err);
                     }
                     res.status(201).json(movie);
@@ -78,7 +77,7 @@ module.exports = {
 
     // POST endpoint: /movies/:id/actors add an actor
     addActor: function(req, res, next) {
-        Movie.fineOne({id: req.params.id}, function(err, result) {
+        Movie.findOne({id: req.params.id}, function(err, result) {
             if (err) { return res.status(400).json(err); }
             if (!result) { return res.status(404).json(); }
 

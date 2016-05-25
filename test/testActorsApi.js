@@ -22,6 +22,25 @@ describe('Actors', function() {
         });
     });
 
+    describe('PUT actor', function() {
+        it('should edit an actor', function (done) {
+            var actor = {
+                'name': 'Rihanna',
+                'birth_year': '2011'
+            }
+            request(app).put('/actors/1').send(actor).expect(200, done);
+            done();
+        });
+
+        it('should have edited the actor', function (done) {
+            request(app).get('/actors/1').expect(200)
+            .end(function(err, res) {
+                res.body.name.should.eql('Rihanna');
+                done();
+            });
+        });
+    });
+
     describe('POST /actors/:id/movies', function() {
         it('should add a movie to the actor', function(done) {
             var movie = {

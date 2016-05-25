@@ -24,6 +24,16 @@ describe('Movies', function() {
 
             request(app).post('/movies').send(movie).expect(201, done);
         });
+
+        it('should not allow creation of duplicate movies', function(done) {
+            var movie = {
+                'id': '2',
+                'title': 'The Jungle Book',
+                'year': '2016'
+            }
+
+            request(app).post('/movies').send(movie).expect(400, done);
+        })
     });
 
     describe('GET movie', function() {
@@ -36,6 +46,26 @@ describe('Movies', function() {
     describe('DELETE Movie', function() {
         it('should remove a movie', function(done) {
             request(app).delete('/movies/1').expect(204, done);
+        });
+    });
+
+    describe('POST ACTORS /movies/:id/actors', function(done) {
+        it('should add actors to a movie', function(done) {
+            var actor = {
+                'id': '3',
+                'name': 'Joana Banks',
+                'birth_year': '2010',
+            }
+            request(app).post('/movies/2/actors').send(actor)
+            .expect(201, done);
+        });
+
+        it('actor should have array of movies', function(done) {
+            request(app).get('/movies/2').expect(200).end(
+                function(err, res) {
+                    res.body.actors.should.not.be.empty;
+                    done();
+                });
         });
     });
 })
