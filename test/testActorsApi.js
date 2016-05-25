@@ -14,6 +14,16 @@ describe('Actors', function() {
 
             request(app).post('/actors').send(actor).expect(201, done);
         });
+
+        it('should not allow creation of duplicate movies', function(done) {
+            var actor = {
+                'id': '1',
+                'name': 'Mimi mimi',
+                'birth_year': '2014'
+            }
+
+            request(app).post('/actors').send(actor).expect(400, done);
+        })
     });
 
     describe('GET actor', function() {
