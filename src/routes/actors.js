@@ -52,16 +52,15 @@ module.exports = {
 
     // DELETE endpoint: /actors/:id  Delete an actor
     deleteOne: function(req, res, next) {
-        Actor.findOneAndRemove({ id: req.params.id}, function(err) {
+        Actor.findOneAndRemove({ id: req.params.id}, function(err, results) {
             if (err) return res.status(400).json(err);
-            res.status(204).json();
+            res.status(204).json(results);
         });
     },
 
     // POST endpoint: /actors/:id/movies add one movie
     addMovie: function(req, res, next) {
         Actor.findOne({id: req.params.id}, function(err, result) {
-            console.log(JSON.stringify(result));
             if (err) return res.status(400).json(err);
             if (!result) {
                 return res.status(404).json();
@@ -72,7 +71,9 @@ module.exports = {
                 if (!movie) {
                     // add the new movie to the actors list
                     Movie.create(req.body, function(err, movie) {
-                        if (err) { return res.status(400).json(err); }
+                        if (err) {
+                            return res.status(400).json(err);
+                        }
                         result.movies.push(movie);
                     });
                 }
@@ -80,9 +81,10 @@ module.exports = {
                     // check to see if the movie is already added
                     for (var i = 0; i < result.movies.length; i++) {
                         if (result.movies[i] == movie._id) {
-                            continue;
-                        }
-                        else {
+                            // already exists in array
+                            return res.status(302).json(result);
+                        } else {
+                            // existed but not in our array...so add it
                             result.movies.push(movie);
                         }
                     }
@@ -100,10 +102,12 @@ module.exports = {
         Actor.findOne({ id: req.params.id }, function(err, actor) {
             if (err) { return res.status(400).json(err); }
             if(!actor) { return res.status(404).json(); }
-            actor.movies = [];
+            Movie.findOne({ id: req.params.mid }, function(err, movie) {
+                actor.movies.deleteItem(actor._id);
+            });
             actor.save(function(err) {
                 if (err) { return res.status(400).json(err); }
-                res.status(204).json(actor);
+                res.status(200).json(actor);
             });
         });
     }
