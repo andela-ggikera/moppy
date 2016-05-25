@@ -102,7 +102,9 @@ module.exports = {
         Actor.findOne({ id: req.params.id }, function(err, actor) {
             if (err) { return res.status(400).json(err); }
             if(!actor) { return res.status(404).json(); }
-            actor.movies = [];
+            Movie.findOne({ id: req.params.mid }, function(err, movie) {
+                actor.movies.deleteItem(actor._id);
+            });
             actor.save(function(err) {
                 if (err) { return res.status(400).json(err); }
                 res.status(200).json(actor);

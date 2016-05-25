@@ -43,12 +43,6 @@ describe('Movies', function() {
         });
     });
 
-    describe('DELETE Movie', function() {
-        it('should remove a movie', function(done) {
-            request(app).delete('/movies/1').expect(204, done);
-        });
-    });
-
     describe('POST ACTORS /movies/:id/actors', function(done) {
         it('should add actors to a movie', function(done) {
             var actor = {
@@ -66,6 +60,25 @@ describe('Movies', function() {
                     res.body.actors.should.not.be.empty;
                     done();
                 });
+        });
+    });
+
+    describe('DELETE /movies/:id/actors/:actor_id', function() {
+        it('should remove an actor from a movie', function(done) {
+            request(app).delete('/movies/2/actors/1').expect(200, done);
+        });
+
+        it('movie should not have that actor anymore', function(done) {
+            request(app).get('/movies/2').expect(201).end(function(err, res) {
+                res.body.actors.should.eql([]);
+            });
+            done();
+        });
+    });
+
+    describe('DELETE Movie', function() {
+        it('should remove a movie', function(done) {
+            request(app).delete('/movies/1').expect(204, done);
         });
     });
 })

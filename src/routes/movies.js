@@ -121,7 +121,7 @@ module.exports = {
 
             movie.save(function(err) {
                 if (err) { return res.status(400).json(err); }
-                res.status(204).json(movie);
+                res.status(200).json(movie);
             });
         });
     }
