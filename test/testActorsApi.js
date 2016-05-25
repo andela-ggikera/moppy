@@ -22,29 +22,31 @@ describe('Actors', function() {
         });
     });
 
+    describe('POST /actors/:id/movies', function() {
+        it('should add a movie to the actor', function(done) {
+            var movie = {
+                'id': '3',
+                'title': 'Viva',
+                'year': '2017'
+            }
+            request(app).post('/actors/1/movies').send(movie)
+            .expect(201, done);
+        });
+
+        it('actor should have array of movies', function(done) {
+            request(app).get('/actors/1').expect(200).end(
+                function(err, res) {
+                    res.body.movies.should.not.be.empty;
+                    done();
+                });
+        });
+    });
+
     describe('DELETE Actor', function() {
         it('should remove an actor', function(done) {
             request(app).delete('/actors/1').expect(204, done);
         });
     });
 
-    describe('POST /actors/:id/movies', function() {
-        it('should add a movie to the actor', function(done) {
-            var movie = {
-                'id': '1',
-                'title': 'Viva',
-                'year': '2017'
-            }
-            request(app).post('/actors/2/movies').send(movie)
-            .expect(201, done);
-        });
 
-        // it('actor should have array of movies', function(done) {
-        //     request(app).get('/actors/1').expect(200).end(
-        //         function(err, res) {
-        //             res.body.movies.should.eql(['1']);
-        //             done();
-        //         });
-        // });
-    });
 })

@@ -61,9 +61,9 @@ module.exports = {
     // POST endpoint: /actors/:id/movies add one movie
     addMovie: function(req, res, next) {
         Actor.findOne({id: req.params.id}, function(err, result) {
-            console.log(JSON.stringify(result));
             if (err) return res.status(400).json(err);
             if (!result) {
+                console.log("I have nothing here");
                 return res.status(404).json();
             }
             Movie.findOne({ id: req.body.id }, function(err, movie) {
@@ -72,7 +72,9 @@ module.exports = {
                 if (!movie) {
                     // add the new movie to the actors list
                     Movie.create(req.body, function(err, movie) {
-                        if (err) { return res.status(400).json(err); }
+                        if (err) {
+                            return res.status(400).json(err);
+                        }
                         result.movies.push(movie);
                     });
                 }
@@ -80,9 +82,10 @@ module.exports = {
                     // check to see if the movie is already added
                     for (var i = 0; i < result.movies.length; i++) {
                         if (result.movies[i] == movie._id) {
-                            continue;
-                        }
-                        else {
+                            // already exists in array
+                            return res.status(302).json(result);
+                        } else {
+                            // existed but not in our array...so add it
                             result.movies.push(movie);
                         }
                     }

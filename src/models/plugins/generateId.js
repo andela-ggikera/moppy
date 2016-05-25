@@ -3,7 +3,7 @@ A generic plugin to autogenerate ids for model entities.
 */
 module.exports = function() {
     return function generateId(schema) {
-        schema.pre('validate', function(next, done) {
+        schema.pre('validate', function(next) {
             var instance = this;
             // apply to any mongoose schema
             var model = instance.model(instance.constructor.modelName);

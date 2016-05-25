@@ -20,6 +20,10 @@ app.delete('/actors/:id/movies/:mid', actors.deleteMovie);
 
 app.route('/movies')
 .get(movies.getAll)
+.post(movies.createOne)
+
+app.route('/movies/:id')
+.get(movies.getOne)
 .put(movies.updateOne)
 .delete(movies.deleteOne);
 
@@ -27,7 +31,7 @@ app.post('/movies/:id/actors', movies.addActor);
 app.delete('/movies/:id/actors/:aid', movies.deleteActor);
 
 // Connect to Mongo on start
-db.connect('mongodb://localhost:27017/mydatabase', function(err) {
+db.connect('mongodb://localhost:27017/moppy', function(err) {
   if (err) {
     console.log('Unable to connect to Mongo.')
     process.exit(1)
