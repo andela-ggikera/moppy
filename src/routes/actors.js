@@ -52,9 +52,9 @@ module.exports = {
 
     // DELETE endpoint: /actors/:id  Delete an actor
     deleteOne: function(req, res, next) {
-        Actor.findOneAndRemove({ id: req.params.id}, function(err) {
+        Actor.findOneAndRemove({ id: req.params.id}, function(err, results) {
             if (err) return res.status(400).json(err);
-            res.status(204).json();
+            res.status(204).json(results);
         });
     },
 
@@ -63,7 +63,6 @@ module.exports = {
         Actor.findOne({id: req.params.id}, function(err, result) {
             if (err) return res.status(400).json(err);
             if (!result) {
-                console.log("I have nothing here");
                 return res.status(404).json();
             }
             Movie.findOne({ id: req.body.id }, function(err, movie) {
@@ -106,7 +105,7 @@ module.exports = {
             actor.movies = [];
             actor.save(function(err) {
                 if (err) { return res.status(400).json(err); }
-                res.status(204).json(actor);
+                res.status(200).json(actor);
             });
         });
     }

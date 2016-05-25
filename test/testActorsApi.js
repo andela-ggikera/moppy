@@ -61,11 +61,22 @@ describe('Actors', function() {
         });
     });
 
+    describe('DELETE /actors/:id/movies/:movies_id', function() {
+        it('should remove a movie from an actor', function(done) {
+            request(app).delete('/actors/1/movies/1').expect(200, done);
+        });
+
+        it('actor should not have that movie anymore', function(done) {
+            request(app).get('/actors/1').expect(201).end(function(err, res) {
+                res.body.movies.should.eql([]);
+            });
+            done();
+        });
+    });
+
     describe('DELETE Actor', function() {
         it('should remove an actor', function(done) {
             request(app).delete('/actors/1').expect(204, done);
         });
     });
-
-
 })
